@@ -1,0 +1,43 @@
+{
+  "name": "typegraphql-api",
+  "version": "1.0.0",
+  "description": "A Graphql API with Typescript",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "fast-dev": "nodemon --exec ts-node --files --transpile-only src/server.ts",
+    "build": "webpack",
+    "start": "node --trace-warnings dist/server.bundle.js "
+  },
+  "keywords": [
+    "Graphql",
+    "Typescript",
+    "TypeGraphQl"
+  ],
+  "author": "Nadir A. Soza",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.6.3",
+    "apollo-server-core": "^3.6.3",
+    "apollo-server-express": "^3.6.3",
+    "class-validator": "^0.13.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-sslify": "^1.2.0",
+    "graphql": "^15.8.0",
+    "helmet": "^5.0.2",
+    "reflect-metadata": "^0.1.13",
+    "request-context": "^2.0.0",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.5.0",
+    "type-graphql": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/express-sslify": "^1.2.2",
+    "nodemon": "^2.0.15",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-node-externals": "^3.0.0"
+  }
+}
