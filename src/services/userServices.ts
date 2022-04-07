@@ -1,5 +1,5 @@
 
-const hello= (name:string):string => {
+const helloWithName= (name:string):string => {
     try {
         return `Hello ${name}`
     } catch {
@@ -16,8 +16,7 @@ const helloWorld= ():string => {
 }
 
 
-
 export default {
-    hello,
+    helloWithName,
     helloWorld
 };

@@ -27,6 +27,7 @@
     "express-sslify": "^1.2.0",
     "graphql": "^15.8.0",
     "helmet": "^5.0.2",
+    "joi": "^17.6.0",
     "reflect-metadata": "^0.1.13",
     "request-context": "^2.0.0",
     "ts-loader": "^9.2.6",

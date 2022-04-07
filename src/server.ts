@@ -11,12 +11,15 @@ import helmet from 'helmet';
 import enforce from 'express-sslify';
 import Error from './middlewares/errorHandler';
 import { resolvers } from "./resolvers";
-
-
-const { NODE_ENV,ALLOWED_ORIGINS,PORT } = process.env;
+import {config,validateSchema} from './utils/config';
 
 (async () => {
     try {
+		const envIsValid= validateSchema(config)
+		if(envIsValid.error){
+			console.log(envIsValid.error.details)
+			throw new Error("Error to validate env files",500)
+		}
         const app= express()
 
         const contextService= require('request-context')
@@ -26,7 +29,7 @@ const { NODE_ENV,ALLOWED_ORIGINS,PORT } = process.env;
             resolvers,
         }) 
         // Create production basic security
-		if (NODE_ENV === 'production') {
+		if (config.node_env === 'production') {
 		    app.use(json({ limit: '2mb' }));
 			app.use(enforce.HTTPS({ trustProtoHeader: true }));
 			app.use(helmet());
@@ -35,9 +38,9 @@ const { NODE_ENV,ALLOWED_ORIGINS,PORT } = process.env;
 				cors({
 					origin: (origin, callback) => {
 						if (origin === undefined) {
-							return callback(null, true);
+							return callback(null, false);
 						}
-						if (JSON.parse(ALLOWED_ORIGINS!).some((u: string) => origin!.includes(u))) {
+						if (JSON.parse(`[${config.allowed_origins}]`).some((u: string) => origin!.includes(u))) {
 							return callback(null, true);
 						}
 						throw new Error('The origin is not allowed', 500);
@@ -63,8 +66,8 @@ const { NODE_ENV,ALLOWED_ORIGINS,PORT } = process.env;
 		server.applyMiddleware({ app });
 
 		// listen to port
-		app.listen(PORT, () =>
-			console.log(`🚀 Server running on http://localhost:${PORT}/graphql`),
+		app.listen(config.port, () =>
+			console.log(`🚀 Server running on http://localhost:${config.port}/graphql`),
 		);
 
     } catch ({code, message}) {

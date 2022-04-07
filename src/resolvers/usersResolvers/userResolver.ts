@@ -1,4 +1,4 @@
-import { Resolver, Query } from "type-graphql";
+import { Resolver, Query, Arg } from "type-graphql";
 import UserService from "../../services/userServices";
 
 
@@ -15,4 +15,15 @@ export class UserResolver {
         
     }
 
+    @Query(()=> String)
+    async HelloWithName(
+        @Arg('name') name:string
+    ):Promise<string> {
+        try {
+            return UserService.helloWithName(name);
+        } catch (error) {
+            throw new Error("Any error message");            
+        }
+        
+    }
 }
