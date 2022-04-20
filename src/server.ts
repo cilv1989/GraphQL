@@ -27,6 +27,7 @@ import {config,validateSchema} from './utils/config';
 
         const schema =await  buildSchema({
             resolvers,
+			emitSchemaFile:true
         }) 
         // Create production basic security
 		if (config.node_env === 'production') {
