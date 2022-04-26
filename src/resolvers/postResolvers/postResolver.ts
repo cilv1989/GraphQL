@@ -1,13 +1,14 @@
-import { Resolver,Query,Arg } from "type-graphql";
+import { Resolver,Query,Arg,Mutation } from "type-graphql";
 import PostServices from '../../services/postServices'
-import { Post } from "./output/PostOutput";
+import { PostOutput } from "./output/PostOutput";
+import { PostInput } from "./input/PostInput";
 
 @Resolver()
 export class PostResolver{
     constructor(private postServices=PostServices ){}
 
-    @Query(()=> [Post], {nullable:true})
-    async findAllPost(): Promise<Post[]> {
+    @Query(()=> [PostOutput], {nullable:true})
+    async findAllPost(): Promise<PostOutput[]> {
         try {
             return this.postServices.findAllPost()
 
@@ -16,10 +17,10 @@ export class PostResolver{
         }
     }
 
-    @Query(()=> Post, {nullable:true}  )
+    @Query(()=> PostOutput, {nullable:true}  )
     async findPostById(
         @Arg("id") id:number
-    ): Promise<Post | undefined> {
+    ): Promise<PostOutput | undefined> {
         try {
             return this.postServices.findPostById(id)
         } catch (error) {
@@ -27,37 +28,33 @@ export class PostResolver{
         }
     }
 
-    // @Mutation(()=> User)
-    // async newUser(
-    //     @Args() {
-    //         firstName,
-    //         lastName,
-    //         isActive,
-    //     }: InputUser
-    // ): Promise<User | undefined> {
-    //     try {
-    //         const totalElements= this.userServices.findAllUser().length
-    //         return this.userServices.addUser({
-    //             id: totalElements + 1,
-    //             firstName,
-    //             lastName,
-    //             isActive
-    //         })
-    //     } catch (error) {
-    //         throw new Error("Any error message");            
-    //     }
-    // }
+    @Mutation(()=> PostOutput)
+    async newPost(
+        @Arg("newPost") newPost: PostInput
+    ): Promise<PostOutput | undefined> {
+        try {
+            return this.postServices.addNewPost(
+                {
+                    title: newPost.title,
+                    content: newPost.content, 
+                    user_id: newPost.user_id,
+                }
+            )
+        } catch (error) {
+            throw new Error("Any error message");            
+        }
+    }
 
-    // @Mutation(()=> Boolean)
-    // async deleteUser(
-    //     @Arg('idUser') idUser:number
-    // ): Promise<boolean | undefined> {
-    //     try {
-    //         return this.userServices.deleteUser(idUser)
-    //     } catch (error) {
-    //         throw new Error("Any error message");            
-    //     }
-    // }
+    @Mutation(()=> Boolean)
+    async deletePost(
+        @Arg('idPost') idPost:number
+    ): Promise<boolean | undefined> {
+        try {
+            return this.postServices.deletePost(idPost)
+        } catch (error) {
+            throw new Error("Any error message");            
+        }
+    }
     
 
 }

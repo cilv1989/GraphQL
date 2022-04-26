@@ -1,5 +1,7 @@
 import { Post } from "../model/dataModels";
 import userServices from "../services/userServices";
+import {PostOutput} from "../resolvers/postResolvers/output/PostOutput";
+import { PostInput } from "src/resolvers/postResolvers/input/PostInput";
 
 let postList: Post[] =[
     {
@@ -18,10 +20,27 @@ let postList: Post[] =[
     }
 ]
 
-const addPost=(post: Post)=> {
+const addNewPost=(post: PostInput)=> {
     try {
-        postList.push(post)
-        return postList.find((post:Post) => post.id === post.id)
+        const totalElements= postList.length;
+        const newID=totalElements + 1;
+
+        postList.push({
+            id: newID,
+            title: post.title,
+            content: post.content, 
+            views: 0,
+            user_id: post.user_id
+        })
+        const newPost= postList.find((post:Post) => post.id ===newID)
+        return newPost ? {
+                id: newPost.id,
+                title: newPost.title,
+                content: newPost.content,
+                views: newPost.views,
+                user: userServices.findUserById(newPost.user_id)
+            } : undefined
+
     } catch (error) {
          throw new Error('Error: add new Post.');     
     }
@@ -78,10 +97,8 @@ const deletePost=(_id: number)=> {
     }
 }
 
-
-
 export default {
-    addPost,
+    addNewPost,
     findAllPost,
     findPostById,
     findPostByUser,

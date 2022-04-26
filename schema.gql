@@ -10,11 +10,19 @@ input InputUser {
 }
 
 type Mutation {
+  deletePost(idPost: Float!): Boolean!
   deleteUser(idUser: Float!): Boolean!
+  newPost(newPost: PostInput!): PostOutput!
   newUser(newUser: InputUser!): User!
 }
 
-type Post {
+input PostInput {
+  content: String!
+  title: String!
+  user_id: Int!
+}
+
+type PostOutput {
   content: String!
   id: ID!
   title: String!
@@ -25,9 +33,9 @@ type Post {
 type Query {
   Hello: String!
   HelloWithName(name: String!): String!
-  findAllPost: [Post!]
+  findAllPost: [PostOutput!]
   findAllUsers: [User!]!
-  findPostById(id: Float!): Post
+  findPostById(id: Float!): PostOutput
   findUserById(id: Float!): User
 }
 

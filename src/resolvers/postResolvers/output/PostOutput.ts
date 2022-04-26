@@ -2,7 +2,7 @@ import { Field,ID,Int, ObjectType } from "type-graphql";
 import {User} from '../../usersResolvers/output/UsersOutput'
 
 @ObjectType()
-export class Post {
+export class PostOutput {
     @Field(()=>ID)
     id: number;
 
